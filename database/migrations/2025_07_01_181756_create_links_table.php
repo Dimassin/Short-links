@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('short_url')->unique()->index();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->foreign('user_id')
                 ->references('id')

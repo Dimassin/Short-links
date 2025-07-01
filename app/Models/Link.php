@@ -25,6 +25,6 @@ class Link extends Model
 
     public function getShortUrl(): string
     {
-        return url($this->short_code);
+        return url($this->short_url);
     }
 }

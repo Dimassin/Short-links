@@ -10,6 +10,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class LinkResource extends Resource
@@ -30,6 +32,8 @@ class LinkResource extends Resource
                     ->default(fn() => Str::random(6))
                     ->unique(ignoreRecord: true)
                     ->readonly(),
+                Forms\Components\Hidden::make('user_id')
+                ->default(fn() => Auth::id()),
             ]);
     }
 
@@ -73,7 +77,14 @@ class LinkResource extends Resource
         return [
             'index' => Pages\ListLinks::route('/'),
             'create' => Pages\CreateLink::route('/create'),
+            'view' => Pages\ViewLink::route('/{record}'),
             'edit' => Pages\EditLink::route('/{record}/edit'),
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->where('user_id', Auth::id());
     }
 }

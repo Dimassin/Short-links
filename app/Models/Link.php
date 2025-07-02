@@ -27,4 +27,6 @@ class Link extends Model
     {
         return url($this->short_url);
     }
+
+
 }

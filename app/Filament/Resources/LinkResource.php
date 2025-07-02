@@ -27,6 +27,7 @@ class LinkResource extends Resource
                 Forms\Components\TextInput::make('original_url')
                     ->required()
                     ->url()
+                    ->unique()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('short_url')
                     ->default(fn() => Str::random(6))

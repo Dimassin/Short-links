@@ -2,19 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Link;
-use App\Models\LinkStatistic;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserController extends BaseController
 {
-    public function redirect(Request $request, $code)
+    public function redirect(Request $request, string $code)
     {
-        $link = Link::where('short_url', $code)->firstOrFail();
-        LinkStatistic::create([
-            'link_id' => $link->id,
-            'ip_address' => $request->getClientIp(),
-        ]);
-        return redirect()->away($link->original_url);
+        return $this->service->redirect($request, $code);
     }
 }

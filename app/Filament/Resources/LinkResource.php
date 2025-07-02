@@ -5,7 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LinkResource\Pages;
 use App\Filament\Resources\LinkResource\RelationManagers;
 use App\Models\Link;
-use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -30,7 +29,7 @@ class LinkResource extends Resource
                 Forms\Components\TextInput::make('short_url')
                     ->default(fn() => Str::random(6))
                     ->unique(ignoreRecord: true)
-                    ->disabled(),
+                    ->readonly(),
             ]);
     }
 
@@ -40,7 +39,8 @@ class LinkResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('short_url')
                     ->label('Short URL')
-                    ->url(fn(Link $record) => $record->short_url, true),
+                    ->url(fn(Link $record) => $record->short_url, true)
+                    ->formatStateUsing(fn(Link $record) => request()->getHost() . '/' . $record->short_url),
                 Tables\Columns\TextColumn::make('original_url')
                     ->label('Original URL')
                     ->url(fn(Link $record) => $record->original_url, true)

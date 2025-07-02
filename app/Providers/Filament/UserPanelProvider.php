@@ -24,6 +24,7 @@ class UserPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandName('Short links')
             ->id('user')
             ->path('user')
             ->login()

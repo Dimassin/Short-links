@@ -5,13 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\LinkResource\Pages;
 use App\Filament\Resources\LinkResource\RelationManagers;
 use App\Models\Link;
+use Filament\Actions\CreateAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class LinkResource extends Resource
@@ -29,10 +28,9 @@ class LinkResource extends Resource
                     ->url()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('short_url')
-                    ->required()
-                    ->maxLength(255)
-                    ->default(fn () => Str::random(6))
-                    ->unique(ignoreRecord: true),
+                    ->default(fn() => Str::random(6))
+                    ->unique(ignoreRecord: true)
+                    ->disabled(),
             ]);
     }
 
@@ -42,10 +40,10 @@ class LinkResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('short_url')
                     ->label('Short URL')
-                    ->url(fn (Link $record) =>  $record->short_url, true),
+                    ->url(fn(Link $record) => $record->short_url, true),
                 Tables\Columns\TextColumn::make('original_url')
                     ->label('Original URL')
-                    ->url(fn (Link $record) => $record->original_url, true)
+                    ->url(fn(Link $record) => $record->original_url, true)
                     ->limit(30),
             ])
             ->filters([
